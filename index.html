@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luciana Santillana | Piano en Vivo para Bodas y Eventos</title>
+<meta name="description" content="Música en vivo al piano para bodas, cócteles y eventos corporativos exclusivos. Solicitá tu presupuesto personalizado.">
+
+<!-- Google Fonts: Playfair Display (serif, títulos) + Jost (sans-serif, cuerpo) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Iconos (Font Awesome vía CDN) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar" id="navbar">
+  <div class="navbar__inner container">
+    <a href="#inicio" class="navbar__logo">
+      <span class="navbar__logo-name">Luciana Santillana</span>
+      <span class="navbar__logo-tag">Piano para Eventos</span>
+    </a>
+
+    <nav class="navbar__nav" id="navMenu">
+      <a href="#inicio" class="navbar__link">Inicio</a>
+      <a href="#sobre-mi" class="navbar__link">Sobre mí</a>
+      <a href="#demos" class="navbar__link">Demos</a>
+      <a href="#galeria" class="navbar__link">Galería</a>
+      <a href="#servicios" class="navbar__link">Servicios</a>
+      <a href="#contacto" class="navbar__link">Contacto</a>
+      <a href="#contacto" class="btn btn--gold btn--small navbar__cta">Solicitar Presupuesto</a>
+    </nav>
+
+    <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="hero__bg" style="background-image:url('https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=1920&q=80');"></div>
+  <div class="hero__overlay"></div>
+
+  <div class="hero__content container reveal" data-reveal>
+    <p class="eyebrow">Piano en vivo · Bodas &amp; Eventos exclusivos</p>
+    <h1 class="hero__title">Música en vivo para<br><span>momentos inolvidables</span></h1>
+    <p class="hero__subtitle">
+      Interpretaciones al piano en vivo que transforman bodas, cócteles y celebraciones
+      privadas en experiencias únicas, elegantes y a la medida de cada historia.
+    </p>
+    <div class="hero__actions">
+      <a href="#contacto" class="btn btn--gold">Pedir Presupuesto</a>
+      <a href="#demos" class="btn btn--outline">
+        <i class="fa-solid fa-play"></i> Escuchar Demos
+      </a>
+    </div>
+  </div>
+
+  <a href="#sobre-mi" class="hero__scroll" aria-label="Bajar a la siguiente sección">
+    <span></span>
+  </a>
+</section>
+
+<!-- ================= SOBRE MÍ ================= -->
+<section class="about" id="sobre-mi">
+  <div class="container about__grid">
+    <div class="about__image reveal" data-reveal>
+      <img src="https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=900&q=80" alt="Pianista interpretando en un evento en vivo">
+      <div class="about__image-frame" aria-hidden="true"></div>
+    </div>
+
+    <div class="about__text reveal" data-reveal>
+      <p class="eyebrow">Sobre mí</p>
+      <h2 class="section-title">Una trayectoria dedicada a la música en vivo</h2>
+      <p>
+        Soy pianista profesional especializada en música en vivo para eventos privados.
+        Durante más de una década he tenido el honor de acompañar bodas, cócteles y
+        celebraciones íntimas, creando atmósferas sonoras que se adaptan al carácter
+        de cada encuentro: desde ceremonias emotivas hasta recepciones sofisticadas.
+      </p>
+      <p>
+        Mi propuesta combina un repertorio versátil —clásico, contemporáneo y adaptaciones
+        a pedido— con una presencia discreta y elegante, pensada para realzar cada momento
+        sin nunca opacarlo. Cada evento se planifica en detalle junto a mis clientes,
+        cuidando el repertorio, los tiempos y la ambientación.
+      </p>
+
+      <div class="about__stats">
+        <div class="stat">
+          <span class="stat__number">10+</span>
+          <span class="stat__label">Años de experiencia</span>
+        </div>
+        <div class="stat">
+          <span class="stat__number">200+</span>
+          <span class="stat__label">Eventos realizados</span>
+        </div>
+        <div class="stat">
+          <span class="stat__number">100%</span>
+          <span class="stat__label">A medida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DEMOS ================= -->
+<section class="demos" id="demos">
+  <div class="container">
+    <p class="eyebrow eyebrow--center reveal" data-reveal>Repertorio</p>
+    <h2 class="section-title section-title--center reveal" data-reveal>Las 5 más pedidas</h2>
+    <p class="section-subtitle reveal" data-reveal>Escuchá un fragmento de las piezas favoritas de mis clientes</p>
+
+    <div class="demos__grid">
+
+      <article class="demo-card reveal" data-reveal>
+        <div class="demo-card__art">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="demo-card__body">
+          <h3 class="demo-card__title">Canon en Re Mayor</h3>
+          <span class="demo-card__tag">Clásico · Ceremonia</span>
+          <div class="audio-player" data-audio-player>
+            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="audio-player__progress">
+              <div class="audio-player__bar" data-audio-bar></div>
+            </div>
+            <span class="audio-player__time" data-audio-time>0:15</span>
+            <audio data-audio-src src="assets/audio/demo-1.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-card reveal" data-reveal>
+        <div class="demo-card__art">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="demo-card__body">
+          <h3 class="demo-card__title">Perfect (Ed Sheeran)</h3>
+          <span class="demo-card__tag">Pop · Vals de novios</span>
+          <div class="audio-player" data-audio-player>
+            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="audio-player__progress">
+              <div class="audio-player__bar" data-audio-bar></div>
+            </div>
+            <span class="audio-player__time" data-audio-time>0:15</span>
+            <audio data-audio-src src="assets/audio/demo-2.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-card reveal" data-reveal>
+        <div class="demo-card__art">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="demo-card__body">
+          <h3 class="demo-card__title">Clair de Lune</h3>
+          <span class="demo-card__tag">Clásico · Cóctel</span>
+          <div class="audio-player" data-audio-player>
+            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="audio-player__progress">
+              <div class="audio-player__bar" data-audio-bar></div>
+            </div>
+            <span class="audio-player__time" data-audio-time>0:15</span>
+            <audio data-audio-src src="assets/audio/demo-3.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-card reveal" data-reveal>
+        <div class="demo-card__art">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="demo-card__body">
+          <h3 class="demo-card__title">A Thousand Years</h3>
+          <span class="demo-card__tag">Pop · Entrada de novia</span>
+          <div class="audio-player" data-audio-player>
+            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="audio-player__progress">
+              <div class="audio-player__bar" data-audio-bar></div>
+            </div>
+            <span class="audio-player__time" data-audio-time>0:15</span>
+            <audio data-audio-src src="assets/audio/demo-4.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <article class="demo-card reveal" data-reveal>
+        <div class="demo-card__art">
+          <i class="fa-solid fa-music"></i>
+        </div>
+        <div class="demo-card__body">
+          <h3 class="demo-card__title">Fly Me to the Moon</h3>
+          <span class="demo-card__tag">Jazz · Recepción</span>
+          <div class="audio-player" data-audio-player>
+            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="audio-player__progress">
+              <div class="audio-player__bar" data-audio-bar></div>
+            </div>
+            <span class="audio-player__time" data-audio-time>0:15</span>
+            <audio data-audio-src src="assets/audio/demo-5.mp3" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERÍA ================= -->
+<section class="gallery" id="galeria">
+  <div class="container">
+    <p class="eyebrow eyebrow--center reveal" data-reveal>Momentos</p>
+    <h2 class="section-title section-title--center reveal" data-reveal>Galería</h2>
+    <p class="section-subtitle reveal" data-reveal>Instantáneas de presentaciones en vivo e instrumental</p>
+
+    <div class="gallery__grid">
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1552422535-c45813c61732?auto=format&fit=crop&w=800&q=80" alt="Piano de cola en salón de eventos">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Recepción de boda elegante">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1571974599782-87624638275c?auto=format&fit=crop&w=800&q=80" alt="Piano negro de cola en interior sofisticado">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80" alt="Ceremonia de boda al aire libre">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80" alt="Mesa de evento corporativo elegante">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
+        <img src="https://images.unsplash.com/photo-1522200207767-9d17aa03e4bd?auto=format&fit=crop&w=800&q=80" alt="Salón con piano y luces cálidas">
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICIOS ================= -->
+<section class="services" id="servicios">
+  <div class="container">
+    <p class="eyebrow eyebrow--center reveal" data-reveal>Propuesta</p>
+    <h2 class="section-title section-title--center reveal" data-reveal>Música para cada tipo de evento</h2>
+    <p class="section-subtitle reveal" data-reveal>Un repertorio y una puesta en escena pensados a medida de cada ocasión</p>
+
+    <div class="services__grid">
+      <div class="service-card reveal" data-reveal>
+        <div class="service-card__icon"><i class="fa-solid fa-ring"></i></div>
+        <h3>Bodas</h3>
+        <p>Ceremonia, cóctel y entrada de novios musicalizados con un repertorio elegido junto a la pareja.</p>
+      </div>
+      <div class="service-card reveal" data-reveal>
+        <div class="service-card__icon"><i class="fa-solid fa-martini-glass-citrus"></i></div>
+        <h3>Cócteles</h3>
+        <p>Ambientación sofisticada y discreta para recepciones, brindis y momentos de bienvenida.</p>
+      </div>
+      <div class="service-card reveal" data-reveal>
+        <div class="service-card__icon"><i class="fa-solid fa-briefcase"></i></div>
+        <h3>Eventos Corporativos</h3>
+        <p>Presencia profesional para lanzamientos, cenas de gala y encuentros institucionales.</p>
+      </div>
+      <div class="service-card reveal" data-reveal>
+        <div class="service-card__icon"><i class="fa-solid fa-champagne-glasses"></i></div>
+        <h3>Recepciones Privadas</h3>
+        <p>Celebraciones íntimas y reuniones exclusivas con un acompañamiento musical a medida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACTO / PRESUPUESTO ================= -->
+<section class="contact" id="contacto">
+  <div class="container contact__grid">
+    <div class="contact__info reveal" data-reveal>
+      <p class="eyebrow">Contacto</p>
+      <h2 class="section-title">Solicitá tu presupuesto</h2>
+      <p>
+        Contame sobre tu evento y te responderé a la brevedad con una propuesta
+        personalizada. También podés escribirme directamente por WhatsApp.
+      </p>
+
+      <ul class="contact__list">
+        <li><i class="fa-solid fa-phone"></i> +54 9 11 1234-5678</li>
+        <li><i class="fa-solid fa-envelope"></i> contacto@lucianasantillana.com</li>
+        <li><i class="fa-solid fa-location-dot"></i> Disponible para eventos en todo el país</li>
+      </ul>
+
+      <div class="contact__socials">
+        <a href="#" class="icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="icon-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#" class="icon-btn" aria-label="Linktree"><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div>
+
+    <form class="contact__form reveal" data-reveal id="budgetForm">
+      <div class="form-row">
+        <label for="name">Nombre y apellido</label>
+        <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+      </div>
+
+      <div class="form-row">
+        <label for="phone">Teléfono / WhatsApp</label>
+        <input type="tel" id="phone" name="phone" placeholder="+54 9 11 ...">
+      </div>
+
+      <div class="form-row">
+        <label for="eventType">Tipo de evento</label>
+        <select id="eventType" name="eventType" required>
+          <option value="" disabled selected>Seleccioná una opción</option>
+          <option value="Boda">Boda</option>
+          <option value="Cóctel">Cóctel</option>
+          <option value="Evento Corporativo">Evento Corporativo</option>
+          <option value="Recepción Privada">Recepción Privada</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="eventDate">Fecha tentativa</label>
+        <input type="date" id="eventDate" name="eventDate">
+      </div>
+
+      <div class="form-row">
+        <label for="message">Mensaje (opcional)</label>
+        <textarea id="message" name="message" rows="3" placeholder="Contame más sobre tu evento..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--gold btn--full">
+        <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <span class="navbar__logo-name">Luciana Santillana</span>
+      <span class="navbar__logo-tag">Piano para Eventos</span>
+    </div>
+
+    <div class="footer__socials">
+      <a href="#" class="icon-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#" class="icon-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#" class="icon-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="#" class="icon-btn" aria-label="Linktree"><i class="fa-solid fa-link"></i></a>
+    </div>
+
+    <p class="footer__copy">&copy; <span id="year"></span> Luciana Santillana. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- ================= WHATSAPP FLOTANTE ================= -->
+<a href="https://wa.me/5491112345678" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- ================= LIGHTBOX GALERÍA ================= -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+  <img src="" alt="" id="lightboxImg">
+</div>
+
+<!-- ================= TOAST ================= -->
+<div class="toast" id="toast"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
