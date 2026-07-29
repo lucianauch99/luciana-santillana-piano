@@ -112,7 +112,7 @@
   <div class="container">
     <p class="eyebrow eyebrow--center reveal" data-reveal>Repertorio</p>
     <h2 class="section-title section-title--center reveal" data-reveal>Las más pedidas</h2>
-    <p class="section-subtitle reveal" data-reveal>Escuchá un fragmento de las piezas favoritas de mis clientes, creadas por mí</p>
+    <p class="section-subtitle reveal" data-reveal>Escuchá un fragmento de las piezas más elegidas, creadas por mí</p>
 
     <div class="demos__grid demos__grid--four">
 
@@ -208,18 +208,22 @@
     <p class="section-subtitle reveal" data-reveal>Instantáneas de presentaciones en vivo</p>
 
     <div class="gallery__grid gallery__grid--row">
-      <div class="gallery__item reveal" data-reveal>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
         <img src="assets/img/imagen6.jpeg" alt="Luciana Santillana en presentación en vivo">
-      </div>
-      <div class="gallery__item reveal" data-reveal>
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
         <img src="assets/img/imagen8.jpeg" alt="Luciana Santillana en presentación en vivo">
-      </div>
-      <div class="gallery__item reveal" data-reveal>
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
         <img src="assets/img/imagen2.jpg" alt="Luciana Santillana en presentación en vivo">
-      </div>
-      <div class="gallery__item reveal" data-reveal>
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
+      <button class="gallery__item reveal" data-reveal data-gallery-item>
         <img src="assets/img/mockup-repertorio.png" alt="Tarjeta de repertorio de Luciana Santillana">
-      </div>
+        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      </button>
     </div>
   </div>
 </section>
@@ -385,6 +389,12 @@
 <a href="https://wa.me/5492612055204" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
+
+<!-- ================= LIGHTBOX GALERÍA ================= -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+  <img src="" alt="" id="lightboxImg">
+</div>
 
 <!-- ================= TOAST ================= -->
 <div class="toast" id="toast"></div>

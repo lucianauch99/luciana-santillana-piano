@@ -713,6 +713,79 @@ section {
   transform: scale(1.08);
 }
 
+.gallery__zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 18, 15, 0.45);
+  color: var(--color-white);
+  font-size: 1.3rem;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.gallery__item:hover .gallery__zoom,
+.gallery__item:focus-visible .gallery__zoom {
+  opacity: 1;
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 9, 8, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 10px;
+  transform: scale(0.92);
+  transition: transform 0.35s ease;
+}
+
+.lightbox.is-open img {
+  transform: scale(1);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.lightbox__close:hover {
+  background: var(--color-gold);
+  transform: translateY(-3px) rotate(90deg);
+}
+
 /* =========================================================
    SERVICES
    ========================================================= */
