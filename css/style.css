@@ -231,8 +231,34 @@ section {
 
 .navbar__logo {
   display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navbar__logo-text {
+  display: flex;
   flex-direction: column;
   line-height: 1.1;
+}
+
+.logo-mark {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
+  color: var(--color-white);
+  font-size: 1.05rem;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+  transition: var(--transition);
+}
+
+.navbar__logo:hover .logo-mark {
+  transform: translateY(-3px) rotate(-6deg);
+  box-shadow: var(--shadow-gold);
 }
 
 .navbar__logo-name {
@@ -837,6 +863,16 @@ section {
   padding: 50px 0 30px;
 }
 
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer__brand .navbar__logo-text {
+  text-align: left;
+}
+
 .footer__inner {
   display: flex;
   flex-direction: column;
@@ -1048,6 +1084,11 @@ section {
 @media (min-width: 1000px) {
   .demos__grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .demos__grid.demos__grid--four {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1180px;
   }
 
   .services__grid {

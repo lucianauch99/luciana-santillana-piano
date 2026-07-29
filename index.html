@@ -22,8 +22,19 @@
 <header class="navbar" id="navbar">
   <div class="navbar__inner container">
     <a href="#inicio" class="navbar__logo">
-      <span class="navbar__logo-name">Luciana Santillana</span>
-      <span class="navbar__logo-tag">Piano para Eventos</span>
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 100 60" width="20" height="14" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="94" height="54" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>
+          <line x1="22" y1="3" x2="22" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="41" y1="3" x2="41" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="60" y1="3" x2="60" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="79" y1="3" x2="79" y2="57" stroke="currentColor" stroke-width="3"/>
+        </svg>
+      </span>
+      <span class="navbar__logo-text">
+        <span class="navbar__logo-name">Luciana Santillana</span>
+        <span class="navbar__logo-tag">Piano para Eventos</span>
+      </span>
     </a>
 
     <nav class="navbar__nav" id="navMenu">
@@ -49,11 +60,11 @@
 
   <div class="hero__content container reveal" data-reveal>
     <p class="eyebrow">Piano en vivo · Bodas, XV &amp; Celebraciones Exclusivas</p>
-    <h1 class="hero__title">Música que se siente,<br><span>recuerdos que permanecen</span></h1>
+    <h1 class="hero__title">Tu historia merece sonar<br><span>inolvidable</span></h1>
     <p class="hero__subtitle">
-      Creamos la atmósfera perfecta para tu día más esperado. Desde la calidez de una boda
-      hasta la magia de una fiesta de 15 o un evento privado, el piano en vivo convierte
-      cada instante en un espectáculo íntimo y memorable.
+      Donde cada nota acompaña la emoción de vivir un instante único e irrepetible.
+      La calidez del piano en vivo en tu boda, XV o reunión exclusiva, para atesorar
+      este momento para siempre.
     </p>
     <div class="hero__actions">
       <a href="#contacto" class="btn btn--gold">Pedir Presupuesto</a>
@@ -80,10 +91,9 @@
       <p class="eyebrow">Sobre mí</p>
       <h2 class="section-title">Una trayectoria dedicada a la música en vivo</h2>
       <p>
-        Soy Luciana, Licenciada en Musicoterapia y pianista. Pero sobre todo, soy alguien
-        que cree que los momentos importantes merecen vivirse plenamente. Busco crear
-        experiencias musicales diseñadas para ocasiones irrepetibles, donde el tiempo
-        parece detenerse y cada emoción se atesora para siempre.
+        Soy Luciana, Licenciada en Musicoterapia y pianista. Creo profundamente que las
+        ocasiones especiales merecen vivirse con el alma: por eso diseño experiencias
+        musicales donde el tiempo parece detenerse y cada emoción se atesora para siempre.
       </p>
       <p>
         Mi propuesta combina un repertorio de base con las canciones más elegidas y la
@@ -99,18 +109,18 @@
 <section class="demos" id="demos">
   <div class="container">
     <p class="eyebrow eyebrow--center reveal" data-reveal>Repertorio</p>
-    <h2 class="section-title section-title--center reveal" data-reveal>Las 5 más pedidas</h2>
+    <h2 class="section-title section-title--center reveal" data-reveal>Las más pedidas</h2>
     <p class="section-subtitle reveal" data-reveal>Escuchá un fragmento de las piezas favoritas de mis clientes, creadas por mí</p>
 
-    <div class="demos__grid">
+    <div class="demos__grid demos__grid--four">
 
       <article class="demo-card reveal" data-reveal>
         <div class="demo-card__art">
           <i class="fa-solid fa-music"></i>
         </div>
         <div class="demo-card__body">
-          <h3 class="demo-card__title">Canon en Re Mayor</h3>
-          <span class="demo-card__tag">Clásico · Ceremonia</span>
+          <h3 class="demo-card__title">Perfect</h3>
+          <span class="demo-card__tag">Ed Sheeran · Vals de novios</span>
           <div class="audio-player" data-audio-player>
             <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
               <i class="fa-solid fa-play"></i>
@@ -119,7 +129,7 @@
               <div class="audio-player__bar" data-audio-bar></div>
             </div>
             <span class="audio-player__time" data-audio-time>0:15</span>
-            <audio data-audio-src src="assets/audio/demo-1.mp3" preload="none"></audio>
+            <audio data-audio-src src="assets/audio/perfect.mp3" preload="none"></audio>
           </div>
         </div>
       </article>
@@ -129,8 +139,8 @@
           <i class="fa-solid fa-music"></i>
         </div>
         <div class="demo-card__body">
-          <h3 class="demo-card__title">Perfect (Ed Sheeran)</h3>
-          <span class="demo-card__tag">Pop · Vals de novios</span>
+          <h3 class="demo-card__title">Bendita tu Luz</h3>
+          <span class="demo-card__tag">Maná · Fiesta</span>
           <div class="audio-player" data-audio-player>
             <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
               <i class="fa-solid fa-play"></i>
@@ -139,7 +149,7 @@
               <div class="audio-player__bar" data-audio-bar></div>
             </div>
             <span class="audio-player__time" data-audio-time>0:15</span>
-            <audio data-audio-src src="assets/audio/demo-2.mp3" preload="none"></audio>
+            <audio data-audio-src src="assets/audio/bendita-tu-luz.mp3" preload="none"></audio>
           </div>
         </div>
       </article>
@@ -149,8 +159,8 @@
           <i class="fa-solid fa-music"></i>
         </div>
         <div class="demo-card__body">
-          <h3 class="demo-card__title">Clair de Lune</h3>
-          <span class="demo-card__tag">Clásico · Cóctel</span>
+          <h3 class="demo-card__title">Viva la Vida</h3>
+          <span class="demo-card__tag">Coldplay · Recepción</span>
           <div class="audio-player" data-audio-player>
             <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
               <i class="fa-solid fa-play"></i>
@@ -159,7 +169,7 @@
               <div class="audio-player__bar" data-audio-bar></div>
             </div>
             <span class="audio-player__time" data-audio-time>0:15</span>
-            <audio data-audio-src src="assets/audio/demo-3.mp3" preload="none"></audio>
+            <audio data-audio-src src="assets/audio/viva-la-vida.mp3" preload="none"></audio>
           </div>
         </div>
       </article>
@@ -169,8 +179,8 @@
           <i class="fa-solid fa-music"></i>
         </div>
         <div class="demo-card__body">
-          <h3 class="demo-card__title">A Thousand Years</h3>
-          <span class="demo-card__tag">Pop · Entrada de novia</span>
+          <h3 class="demo-card__title">You'll Be in My Heart</h3>
+          <span class="demo-card__tag">Phil Collins · Emotivo</span>
           <div class="audio-player" data-audio-player>
             <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
               <i class="fa-solid fa-play"></i>
@@ -179,27 +189,7 @@
               <div class="audio-player__bar" data-audio-bar></div>
             </div>
             <span class="audio-player__time" data-audio-time>0:15</span>
-            <audio data-audio-src src="assets/audio/demo-4.mp3" preload="none"></audio>
-          </div>
-        </div>
-      </article>
-
-      <article class="demo-card reveal" data-reveal>
-        <div class="demo-card__art">
-          <i class="fa-solid fa-music"></i>
-        </div>
-        <div class="demo-card__body">
-          <h3 class="demo-card__title">Fly Me to the Moon</h3>
-          <span class="demo-card__tag">Jazz · Recepción</span>
-          <div class="audio-player" data-audio-player>
-            <button class="audio-player__btn" data-audio-toggle aria-label="Reproducir muestra">
-              <i class="fa-solid fa-play"></i>
-            </button>
-            <div class="audio-player__progress">
-              <div class="audio-player__bar" data-audio-bar></div>
-            </div>
-            <span class="audio-player__time" data-audio-time>0:15</span>
-            <audio data-audio-src src="assets/audio/demo-5.mp3" preload="none"></audio>
+            <audio data-audio-src src="assets/audio/you-ll-be-in-my-heart.mp3" preload="none"></audio>
           </div>
         </div>
       </article>
@@ -363,8 +353,19 @@
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <span class="navbar__logo-name">Luciana Santillana</span>
-      <span class="navbar__logo-tag">Piano para Eventos</span>
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 100 60" width="20" height="14" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="94" height="54" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>
+          <line x1="22" y1="3" x2="22" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="41" y1="3" x2="41" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="60" y1="3" x2="60" y2="57" stroke="currentColor" stroke-width="3"/>
+          <line x1="79" y1="3" x2="79" y2="57" stroke="currentColor" stroke-width="3"/>
+        </svg>
+      </span>
+      <span class="navbar__logo-text">
+        <span class="navbar__logo-name">Luciana Santillana</span>
+        <span class="navbar__logo-tag">Piano para Eventos</span>
+      </span>
     </div>
 
     <div class="footer__socials">
