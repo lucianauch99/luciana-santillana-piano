@@ -1175,6 +1175,11 @@ section {
   }
 }
 
+@media (max-width: 640px) {
+  .hero__scroll { display: none; }
+  .hero__content { padding-bottom: 40px; }
+}
+
 @media (max-width: 480px) {
   section { padding: 64px 0; }
   .hero__actions { flex-direction: column; width: 100%; }

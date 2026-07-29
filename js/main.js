@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
 
     const name = budgetForm.name.value.trim();
-    const phone = budgetForm.phone.value.trim();
     const eventType = budgetForm.eventType.value;
     const eventLocation = budgetForm.eventLocation.value;
     const locationDetail = budgetForm.locationDetail.value.trim();
@@ -212,7 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const lines = [
       `¡Hola Luciana! Quisiera solicitar un presupuesto.`,
       `Nombre: ${name}`,
-      phone ? `Teléfono: ${phone}` : null,
       `Tipo de evento: ${eventType}`,
       eventLocation ? `Ubicación del evento: ${eventLocation}` : null,
       locationDetail ? `Dirección / detalle: ${locationDetail}` : null,
