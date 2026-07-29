@@ -145,6 +145,26 @@ document.addEventListener('DOMContentLoaded', () => {
     eventDateInput.min = `${yyyy}-${mm}-${dd}`;
   }
 
+  // En "Fiesta de 15 años" no aplican las ubicaciones con iglesia
+  const eventTypeSelect = document.getElementById('eventType');
+  const eventLocationSelect = document.getElementById('eventLocation');
+  const CHURCH_LOCATIONS = ['Salón e Iglesia', 'Solo Iglesia'];
+
+  eventTypeSelect.addEventListener('change', () => {
+    const isXV = eventTypeSelect.value === 'Fiesta de 15 años';
+
+    Array.from(eventLocationSelect.options).forEach((option) => {
+      if (CHURCH_LOCATIONS.includes(option.value)) {
+        option.hidden = isXV;
+        option.disabled = isXV;
+      }
+    });
+
+    if (isXV && CHURCH_LOCATIONS.includes(eventLocationSelect.value)) {
+      eventLocationSelect.value = '';
+    }
+  });
+
   budgetForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
