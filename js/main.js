@@ -180,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const phone = budgetForm.phone.value.trim();
     const eventType = budgetForm.eventType.value;
     const eventLocation = budgetForm.eventLocation.value;
+    const locationDetail = budgetForm.locationDetail.value.trim();
     const eventDate = budgetForm.eventDate.value;
     const message = budgetForm.message.value.trim();
 
@@ -194,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
       phone ? `Teléfono: ${phone}` : null,
       `Tipo de evento: ${eventType}`,
       eventLocation ? `Ubicación del evento: ${eventLocation}` : null,
+      locationDetail ? `Dirección / detalle: ${locationDetail}` : null,
       eventDate ? `Fecha tentativa: ${eventDate}` : null,
       message ? `Mensaje: ${message}` : null,
     ].filter(Boolean);

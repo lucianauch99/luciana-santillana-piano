@@ -76,6 +76,10 @@ input, select, textarea {
   padding: 0 20px;
 }
 
+.container--wide {
+  max-width: 1400px;
+}
+
 section {
   padding: 90px 0;
 }
@@ -475,12 +479,41 @@ section {
   background: var(--color-cream);
 }
 
+.testimonials__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
 .testimonials__grid {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 640px;
-  margin: 0 auto;
+}
+
+.testimonials__mockup {
+  display: flex;
+  justify-content: center;
+}
+
+.testimonials__mockup img {
+  max-width: 280px;
+  border-radius: var(--radius);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+  transition: var(--transition);
+}
+
+.testimonials__mockup img:hover {
+  transform: translateY(-4px);
+}
+
+@media (min-width: 800px) {
+  .testimonials__layout {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
 }
 
 .chat-bubble {
