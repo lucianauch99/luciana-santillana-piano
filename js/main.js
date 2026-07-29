@@ -160,8 +160,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------- Formulario de presupuesto -> WhatsApp ---------- */
-  const WHATSAPP_NUMBER = '5491112345678'; // reemplazar por el número real (sin +, sin espacios)
+  const WHATSAPP_NUMBER = '5492612055204';
   const budgetForm = document.getElementById('budgetForm');
+
+  // No permitir seleccionar fechas pasadas en "Fecha tentativa"
+  const eventDateInput = document.getElementById('eventDate');
+  if (eventDateInput) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    eventDateInput.min = `${yyyy}-${mm}-${dd}`;
+  }
 
   budgetForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -169,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = budgetForm.name.value.trim();
     const phone = budgetForm.phone.value.trim();
     const eventType = budgetForm.eventType.value;
+    const eventLocation = budgetForm.eventLocation.value;
     const eventDate = budgetForm.eventDate.value;
     const message = budgetForm.message.value.trim();
 
@@ -182,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `Nombre: ${name}`,
       phone ? `Teléfono: ${phone}` : null,
       `Tipo de evento: ${eventType}`,
+      eventLocation ? `Ubicación del evento: ${eventLocation}` : null,
       eventDate ? `Fecha tentativa: ${eventDate}` : null,
       message ? `Mensaje: ${message}` : null,
     ].filter(Boolean);

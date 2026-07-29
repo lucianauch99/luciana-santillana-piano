@@ -468,30 +468,61 @@ section {
   z-index: -1;
 }
 
-.about__stats {
-  display: flex;
-  gap: 34px;
-  margin-top: 30px;
-  flex-wrap: wrap;
+/* =========================================================
+   TESTIMONIOS
+   ========================================================= */
+.testimonials {
+  background: var(--color-cream);
 }
 
-.stat {
+.testimonials__grid {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
-.stat__number {
+.chat-bubble {
+  position: relative;
+  max-width: 82%;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: var(--color-white);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+  transition: var(--transition);
+}
+
+.chat-bubble:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(212, 175, 55, 0.15);
+}
+
+.chat-bubble p {
+  font-size: 0.95rem;
+  color: var(--color-dark-gray);
+  margin-bottom: 8px;
+}
+
+.chat-bubble__author {
+  display: block;
   font-family: var(--font-serif);
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--color-gold-dark);
 }
 
-.stat__label {
-  font-size: 0.85rem;
-  color: var(--color-mid-gray);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.chat-bubble--left {
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border-left: 3px solid var(--color-gold);
+}
+
+.chat-bubble--right {
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  border-right: 3px solid var(--color-gold);
+  text-align: right;
 }
 
 /* =========================================================
@@ -633,6 +664,18 @@ section {
   overflow: hidden;
   aspect-ratio: 1/1;
   min-height: 44px;
+}
+
+@media (max-width: 639px) {
+  .gallery__grid--three .gallery__item:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 640px) {
+  .gallery__grid--three {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .gallery__item img {
@@ -995,6 +1038,9 @@ section {
 .services__grid .reveal:nth-child(3) { transition-delay: 0.16s; }
 .services__grid .reveal:nth-child(4) { transition-delay: 0.24s; }
 
+.testimonials__grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+.testimonials__grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
@@ -1082,6 +1128,12 @@ section {
 
   .services__grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .services__grid--three {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 900px;
+    margin: 0 auto;
   }
 }
 
