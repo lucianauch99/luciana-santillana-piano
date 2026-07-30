@@ -131,33 +131,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---------- Galería: lightbox ---------- */
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxClose = document.getElementById('lightboxClose');
+  /* ---------- Galería: carrusel con teclas de piano ---------- */
+  const carousel = document.querySelector('[data-carousel]');
 
-  document.querySelectorAll('[data-gallery-item]').forEach((item) => {
-    item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
+  if (carousel) {
+    const track = carousel.querySelector('[data-carousel-track]');
+    const slides = Array.from(track.children);
+    const prevBtn = carousel.querySelector('[data-carousel-prev]');
+    const nextBtn = carousel.querySelector('[data-carousel-next]');
+    const dots = Array.from(document.querySelectorAll('[data-carousel-dot]'));
+    let current = 0;
+
+    function goTo(index) {
+      current = (index + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === current));
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    // Deslizar con el dedo en mobile
+    let touchStartX = 0;
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+      const delta = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 40) {
+        goTo(delta < 0 ? current + 1 : current - 1);
+      }
     });
-  });
 
-  function closeLightbox() {
-    lightbox.classList.remove('is-open');
-    document.body.style.overflow = '';
+    goTo(0);
   }
-
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
 
   /* ---------- Formulario de presupuesto -> WhatsApp ---------- */
   const WHATSAPP_NUMBER = '5492612055204';

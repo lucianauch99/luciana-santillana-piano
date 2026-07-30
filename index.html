@@ -206,19 +206,31 @@
     <h2 class="section-title section-title--center reveal" data-reveal>Galería</h2>
     <p class="section-subtitle reveal" data-reveal>Instantáneas de presentaciones en vivo</p>
 
-    <div class="gallery__grid gallery__grid--row">
-      <button class="gallery__item reveal" data-reveal data-gallery-item>
-        <img src="assets/img/imagen6.jpeg" alt="Luciana Santillana en presentación en vivo">
-        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+    <div class="carousel reveal" data-reveal data-carousel>
+      <div class="carousel__track" data-carousel-track>
+        <div class="carousel__slide">
+          <img src="assets/img/imagen6.jpeg" alt="Luciana Santillana en presentación en vivo">
+        </div>
+        <div class="carousel__slide">
+          <img src="assets/img/imagen5.jpeg" alt="Luciana Santillana en presentación en vivo">
+        </div>
+        <div class="carousel__slide">
+          <img src="assets/img/galeria-nueva.jpeg" alt="Luciana Santillana en presentación en vivo">
+        </div>
+      </div>
+
+      <button class="carousel__arrow carousel__arrow--prev" data-carousel-prev aria-label="Foto anterior">
+        <i class="fa-solid fa-chevron-left"></i>
       </button>
-      <button class="gallery__item reveal" data-reveal data-gallery-item>
-        <img src="assets/img/imagen5.jpeg" alt="Luciana Santillana en presentación en vivo">
-        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
+      <button class="carousel__arrow carousel__arrow--next" data-carousel-next aria-label="Foto siguiente">
+        <i class="fa-solid fa-chevron-right"></i>
       </button>
-      <button class="gallery__item reveal" data-reveal data-gallery-item>
-        <img src="assets/img/galeria-nueva.jpeg" alt="Luciana Santillana en presentación en vivo">
-        <span class="gallery__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-      </button>
+    </div>
+
+    <div class="carousel__keys" data-carousel-dots>
+      <button class="carousel__key" data-carousel-dot aria-label="Ver foto 1"></button>
+      <button class="carousel__key" data-carousel-dot aria-label="Ver foto 2"></button>
+      <button class="carousel__key" data-carousel-dot aria-label="Ver foto 3"></button>
     </div>
   </div>
 </section>
@@ -379,12 +391,6 @@
 <a href="https://wa.me/5492612055204" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
 </a>
-
-<!-- ================= LIGHTBOX GALERÍA ================= -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
-  <img src="" alt="" id="lightboxImg">
-</div>
 
 <!-- ================= TOAST ================= -->
 <div class="toast" id="toast"></div>
