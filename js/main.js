@@ -501,6 +501,8 @@ document.addEventListener('DOMContentLoaded', () => {
       trigger.classList.add('has-value');
     }
 
+    const wheelSyncers = [];
+
     function buildWheel(container, values, initialIndex, onSelect) {
       values.forEach((val) => {
         const item = document.createElement('div');
@@ -539,8 +541,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
 
-      container.scrollTop = initialIndex * WHEEL_ITEM_HEIGHT;
-      refreshStyles();
+      // El contenedor arranca oculto (display:none) y ahi el navegador ignora
+      // el scrollTop; por eso la posicion real se fija cada vez que el popover se abre.
+      wheelSyncers.push(() => {
+        container.scrollTop = initialIndex * WHEEL_ITEM_HEIGHT;
+        refreshStyles();
+      });
     }
 
     const hours = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
@@ -551,12 +557,17 @@ document.addEventListener('DOMContentLoaded', () => {
     buildWheel(minuteCol, minutes, currentMinute, (val) => { currentMinute = parseInt(val, 10); });
     buildWheel(periodCol, periods, 1, (val) => { currentPeriod = val; });
 
+    // Deja confirmado un valor por defecto (12:00 PM) desde el arranque, para que si la
+    // persona no llega a scrollear ninguna rueda, el horario igual viaje en el mensaje.
+    commit();
+
     function onOutsideClick(e) {
       if (!root.contains(e.target)) closePopover();
     }
 
     function openPopover() {
       popover.hidden = false;
+      requestAnimationFrame(() => wheelSyncers.forEach((sync) => sync()));
       document.addEventListener('click', onOutsideClick);
     }
 
