@@ -50,7 +50,7 @@
       <a href="#galeria" class="navbar__link">Galería</a>
       <a href="#servicios" class="navbar__link">Servicios</a>
       <a href="#contacto" class="navbar__link">Contacto</a>
-      <a href="#contacto" class="btn btn--gold btn--small navbar__cta">Solicitar Presupuesto</a>
+      <a href="#contacto" class="btn btn--gold btn--small navbar__cta">Cotizar Evento</a>
     </nav>
 
     <button class="navbar__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
@@ -340,43 +340,75 @@
         </select>
       </div>
 
-      <div class="form-row">
+      <div class="form-row" id="locationSingleRow" hidden data-loc-field>
         <label for="locationDetail">Dirección o detalle del lugar</label>
         <div class="input-with-btn">
-          <input type="text" id="locationDetail" name="locationDetail" placeholder="Ej: Salón Los Aromos, Luján de Cuyo">
-          <button type="button" class="input-with-btn__action" id="mapSearchBtn" aria-label="Buscar dirección en el mapa">
+          <input type="text" id="locationDetail" name="locationDetail" data-loc-input placeholder="Ej: Salón Los Aromos, Luján de Cuyo">
+          <button type="button" class="input-with-btn__action" data-loc-search aria-label="Buscar dirección en el mapa">
             <i class="fa-solid fa-magnifying-glass-location"></i>
           </button>
         </div>
+        <div class="event-map" data-loc-map hidden></div>
+        <input type="hidden" id="eventLat" name="eventLat" data-loc-lat>
+        <input type="hidden" id="eventLng" name="eventLng" data-loc-lng>
       </div>
 
-      <div class="form-row form-row--map" id="mapRow" hidden>
-        <label>Marcá el lugar exacto en el mapa (opcional)</label>
-        <div id="eventMap" class="event-map"></div>
-        <input type="hidden" id="eventLat" name="eventLat">
-        <input type="hidden" id="eventLng" name="eventLng">
+      <div class="form-row form-row--split" id="locationDualRow" hidden>
+        <div data-loc-field>
+          <label for="locationDetailChurch">Dirección Iglesia</label>
+          <div class="input-with-btn">
+            <input type="text" id="locationDetailChurch" name="locationDetailChurch" data-loc-input placeholder="Ej: Iglesia Catedral">
+            <button type="button" class="input-with-btn__action" data-loc-search aria-label="Buscar dirección en el mapa">
+              <i class="fa-solid fa-magnifying-glass-location"></i>
+            </button>
+          </div>
+          <div class="event-map" data-loc-map hidden></div>
+          <input type="hidden" id="eventLatChurch" name="eventLatChurch" data-loc-lat>
+          <input type="hidden" id="eventLngChurch" name="eventLngChurch" data-loc-lng>
+        </div>
+        <div data-loc-field>
+          <label for="locationDetailVenue">Dirección Salón</label>
+          <div class="input-with-btn">
+            <input type="text" id="locationDetailVenue" name="locationDetailVenue" data-loc-input placeholder="Ej: Salón Los Aromos">
+            <button type="button" class="input-with-btn__action" data-loc-search aria-label="Buscar dirección en el mapa">
+              <i class="fa-solid fa-magnifying-glass-location"></i>
+            </button>
+          </div>
+          <div class="event-map" data-loc-map hidden></div>
+          <input type="hidden" id="eventLatVenue" name="eventLatVenue" data-loc-lat>
+          <input type="hidden" id="eventLngVenue" name="eventLngVenue" data-loc-lng>
+        </div>
       </div>
 
       <div class="form-row" id="horarioSingleRow" hidden>
-        <label for="eventTime">Horario</label>
-        <input type="time" id="eventTime" name="eventTime">
+        <label>Horario</label>
+        <div class="time-picker" data-time-picker>
+          <div class="time-picker__track" data-time-picker-track></div>
+        </div>
+        <input type="hidden" id="eventTime" name="eventTime">
       </div>
 
       <div class="form-row form-row--split" id="horarioDualRow" hidden>
         <div>
-          <label for="eventTimeChurch">Horario Iglesia</label>
-          <input type="time" id="eventTimeChurch" name="eventTimeChurch">
+          <label>Horario Iglesia</label>
+          <div class="time-picker" data-time-picker>
+            <div class="time-picker__track" data-time-picker-track></div>
+          </div>
+          <input type="hidden" id="eventTimeChurch" name="eventTimeChurch">
         </div>
         <div>
-          <label for="eventTimeVenue">Horario Salón</label>
-          <input type="time" id="eventTimeVenue" name="eventTimeVenue">
+          <label>Horario Salón</label>
+          <div class="time-picker" data-time-picker>
+            <div class="time-picker__track" data-time-picker-track></div>
+          </div>
+          <input type="hidden" id="eventTimeVenue" name="eventTimeVenue">
         </div>
       </div>
 
       <label class="checkbox">
         <input type="checkbox" id="pianoRecepcion" name="pianoRecepcion">
         <span class="checkbox__box" aria-hidden="true"></span>
-        Piano en recepción
+        Agregar piano en recepción
       </label>
 
       <div class="form-row">

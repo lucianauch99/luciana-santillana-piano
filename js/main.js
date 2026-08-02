@@ -199,94 +199,144 @@ document.addEventListener('DOMContentLoaded', () => {
     horarioSingleRow.hidden = !(hasLocation && !isBoth);
   }
 
-  // Mapa interactivo para marcar el lugar del evento (Leaflet + OpenStreetMap, sin API key)
-  const mapRow = document.getElementById('mapRow');
-  const mapContainer = document.getElementById('eventMap');
-  const latInput = document.getElementById('eventLat');
-  const lngInput = document.getElementById('eventLng');
-  const mapSearchBtn = document.getElementById('mapSearchBtn');
-  const locationDetailInput = document.getElementById('locationDetail');
+  // Direccion + mapa interactivo para marcar el lugar (Leaflet + OpenStreetMap, sin API key).
+  // Cada "campo de ubicacion" (unico, o Iglesia/Salon por separado) es una instancia independiente.
   const MENDOZA_CENTER = [-32.8908, -68.8272];
-  let leafletMap = null;
-  let mapMarker = null;
 
-  function ensureMap() {
-    if (leafletMap || typeof L === 'undefined') return;
+  function createLocationField(root) {
+    const input = root.querySelector('[data-loc-input]');
+    const searchBtn = root.querySelector('[data-loc-search]');
+    const mapEl = root.querySelector('[data-loc-map]');
+    const latInput = root.querySelector('[data-loc-lat]');
+    const lngInput = root.querySelector('[data-loc-lng]');
 
-    leafletMap = L.map(mapContainer).setView(MENDOZA_CENTER, 12);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(leafletMap);
+    let map = null;
+    let marker = null;
 
-    leafletMap.on('click', (e) => placeMarker(e.latlng.lat, e.latlng.lng, true));
-  }
-
-  function placeMarker(lat, lng, recenter) {
-    latInput.value = lat.toFixed(6);
-    lngInput.value = lng.toFixed(6);
-
-    if (mapMarker) {
-      mapMarker.setLatLng([lat, lng]);
-    } else {
-      mapMarker = L.marker([lat, lng], { draggable: true }).addTo(leafletMap);
-      mapMarker.on('dragend', () => {
-        const pos = mapMarker.getLatLng();
-        latInput.value = pos.lat.toFixed(6);
-        lngInput.value = pos.lng.toFixed(6);
-      });
+    async function reverseGeocode(lat, lng) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+        );
+        const data = await response.json();
+        return data && data.display_name ? data.display_name : null;
+      } catch (err) {
+        return null;
+      }
     }
 
-    if (recenter) leafletMap.setView([lat, lng], 15);
+    function placeMarker(lat, lng, recenter, fillAddress) {
+      latInput.value = lat.toFixed(6);
+      lngInput.value = lng.toFixed(6);
+
+      if (marker) {
+        marker.setLatLng([lat, lng]);
+      } else {
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        // Arrastrar el pin tambien actualiza la direccion escrita
+        marker.on('dragend', () => {
+          const pos = marker.getLatLng();
+          latInput.value = pos.lat.toFixed(6);
+          lngInput.value = pos.lng.toFixed(6);
+          reverseGeocode(pos.lat, pos.lng).then((address) => {
+            if (address) input.value = address;
+          });
+        });
+      }
+
+      if (recenter && map) map.setView([lat, lng], 15);
+
+      if (fillAddress) {
+        reverseGeocode(lat, lng).then((address) => {
+          if (address) input.value = address;
+        });
+      }
+    }
+
+    function ensureMap() {
+      if (map || typeof L === 'undefined') return;
+
+      map = L.map(mapEl).setView(MENDOZA_CENTER, 12);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(map);
+
+      // Click en el mapa: coloca el pin y escribe la direccion sola
+      map.on('click', (e) => placeMarker(e.latlng.lat, e.latlng.lng, true, true));
+    }
+
+    async function search() {
+      const query = input.value.trim();
+
+      if (!query) {
+        showToast('Escribí una dirección para buscarla en el mapa');
+        return;
+      }
+
+      ensureMap();
+
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query + ', Mendoza, Argentina')}`
+        );
+        const results = await response.json();
+
+        if (!results.length) {
+          showToast('No se encontró esa dirección, marcala manualmente en el mapa');
+          return;
+        }
+
+        placeMarker(parseFloat(results[0].lat), parseFloat(results[0].lon), true);
+      } catch (err) {
+        showToast('No se pudo buscar la dirección, marcala manualmente en el mapa');
+      }
+    }
+
+    searchBtn.addEventListener('click', search);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        search();
+      }
+    });
+
+    return {
+      show() {
+        mapEl.hidden = false;
+        requestAnimationFrame(() => {
+          ensureMap();
+          if (map) map.invalidateSize();
+        });
+      },
+    };
   }
 
-  function updateMapVisibility() {
+  const locationSingleRow = document.getElementById('locationSingleRow');
+  const locationDualRow = document.getElementById('locationDualRow');
+  const locationFields = Array.from(document.querySelectorAll('[data-loc-field]')).map((root) => ({
+    root,
+    field: createLocationField(root),
+  }));
+
+  function updateLocationRows() {
     const hasLocation = Boolean(eventLocationSelect.value);
-    mapRow.hidden = !hasLocation;
+    const isBoth = eventLocationSelect.value === 'Salón e Iglesia';
 
-    if (hasLocation) {
-      requestAnimationFrame(() => {
-        ensureMap();
-        if (leafletMap) leafletMap.invalidateSize();
-      });
-    }
+    locationSingleRow.hidden = !(hasLocation && !isBoth);
+    locationDualRow.hidden = !isBoth;
+
+    locationFields.forEach(({ root, field }) => {
+      const visible = isBoth
+        ? locationDualRow.contains(root)
+        : root === locationSingleRow;
+      if (visible && hasLocation) field.show();
+    });
   }
 
   eventLocationSelect.addEventListener('change', () => {
     updateHorarioRows();
-    updateMapVisibility();
-  });
-
-  mapSearchBtn.addEventListener('click', async () => {
-    const query = locationDetailInput.value.trim();
-
-    if (!eventLocationSelect.value) {
-      showToast('Elegí primero la ubicación del evento');
-      return;
-    }
-
-    if (!query) {
-      showToast('Escribí una dirección para buscarla en el mapa');
-      return;
-    }
-
-    ensureMap();
-
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query + ', Mendoza, Argentina')}`
-      );
-      const results = await response.json();
-
-      if (!results.length) {
-        showToast('No se encontró esa dirección, marcala manualmente en el mapa');
-        return;
-      }
-
-      placeMarker(parseFloat(results[0].lat), parseFloat(results[0].lon), true);
-    } catch (err) {
-      showToast('No se pudo buscar la dirección, marcala manualmente en el mapa');
-    }
+    updateLocationRows();
   });
 
   eventTypeSelect.addEventListener('change', () => {
@@ -302,9 +352,41 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isXV && CHURCH_LOCATIONS.includes(eventLocationSelect.value)) {
       eventLocationSelect.value = '';
       updateHorarioRows();
-      updateMapVisibility();
+      updateLocationRows();
     }
   });
+
+  // Selector de horario tipo chips (reemplaza el <input type="time"> nativo)
+  function buildTimePicker(pickerEl) {
+    const track = pickerEl.querySelector('[data-time-picker-track]');
+    const hiddenInput = pickerEl.nextElementSibling;
+    if (!track || !hiddenInput) return;
+
+    const START_MIN = 9 * 60; // 09:00
+    const END_MIN = 23 * 60 + 30; // 23:30
+    const STEP = 30;
+
+    for (let mins = START_MIN; mins <= END_MIN; mins += STEP) {
+      const h = String(Math.floor(mins / 60)).padStart(2, '0');
+      const m = String(mins % 60).padStart(2, '0');
+      const label = `${h}:${m}`;
+
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'time-chip';
+      chip.textContent = label;
+
+      chip.addEventListener('click', () => {
+        track.querySelectorAll('.time-chip').forEach((c) => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        hiddenInput.value = label;
+      });
+
+      track.appendChild(chip);
+    }
+  }
+
+  document.querySelectorAll('[data-time-picker]').forEach(buildTimePicker);
 
   budgetForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -312,9 +394,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const name = budgetForm.name.value.trim();
     const eventType = budgetForm.eventType.value;
     const eventLocation = budgetForm.eventLocation.value;
-    const locationDetail = budgetForm.locationDetail.value.trim();
-    const lat = budgetForm.eventLat.value;
-    const lng = budgetForm.eventLng.value;
     const isBothLocations = eventLocation === 'Salón e Iglesia';
     const eventTime = budgetForm.eventTime.value;
     const eventTimeChurch = budgetForm.eventTimeChurch.value;
@@ -328,15 +407,40 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const mapsLink = (lat && lng) ? `https://www.google.com/maps?q=${lat},${lng}` : null;
+    function mapsLink(lat, lng) {
+      return (lat && lng) ? `https://www.google.com/maps?q=${lat},${lng}` : null;
+    }
+
+    let locationLines;
+
+    if (isBothLocations) {
+      const churchDetail = budgetForm.locationDetailChurch.value.trim();
+      const churchLink = mapsLink(budgetForm.eventLatChurch.value, budgetForm.eventLngChurch.value);
+      const venueDetail = budgetForm.locationDetailVenue.value.trim();
+      const venueLink = mapsLink(budgetForm.eventLatVenue.value, budgetForm.eventLngVenue.value);
+
+      locationLines = [
+        churchDetail ? `Dirección Iglesia: ${churchDetail}` : null,
+        churchLink ? `Ubicación Iglesia en el mapa: ${churchLink}` : null,
+        venueDetail ? `Dirección Salón: ${venueDetail}` : null,
+        venueLink ? `Ubicación Salón en el mapa: ${venueLink}` : null,
+      ];
+    } else {
+      const locationDetail = budgetForm.locationDetail.value.trim();
+      const link = mapsLink(budgetForm.eventLat.value, budgetForm.eventLng.value);
+
+      locationLines = [
+        locationDetail ? `Dirección / detalle: ${locationDetail}` : null,
+        link ? `Ubicación en el mapa: ${link}` : null,
+      ];
+    }
 
     const lines = [
       `¡Hola Luciana! Quisiera solicitar un presupuesto.`,
       `Nombre: ${name}`,
       `Tipo de evento: ${eventType}`,
       eventLocation ? `Ubicación del evento: ${eventLocation}` : null,
-      locationDetail ? `Dirección / detalle: ${locationDetail}` : null,
-      mapsLink ? `Ubicación en el mapa: ${mapsLink}` : null,
+      ...locationLines,
       isBothLocations && eventTimeChurch ? `Horario Iglesia: ${eventTimeChurch}` : null,
       isBothLocations && eventTimeVenue ? `Horario Salón: ${eventTimeVenue}` : null,
       !isBothLocations && eventTime ? `Horario: ${eventTime}` : null,
