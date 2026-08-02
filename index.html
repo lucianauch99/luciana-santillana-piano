@@ -382,26 +382,62 @@
 
       <div class="form-row" id="horarioSingleRow" hidden>
         <label>Horario</label>
-        <div class="time-picker" data-time-picker>
-          <div class="time-picker__track" data-time-picker-track></div>
+        <div class="time-field" data-time-field>
+          <button type="button" class="time-field__trigger" data-time-trigger>
+            <i class="fa-solid fa-clock"></i>
+            <span data-time-label>Seleccioná un horario</span>
+          </button>
+          <div class="time-wheel" data-time-popover hidden>
+            <div class="time-wheel__highlight" aria-hidden="true"></div>
+            <div class="time-wheel__col" data-wheel="hour"></div>
+            <span class="time-wheel__sep">:</span>
+            <div class="time-wheel__col" data-wheel="minute"></div>
+            <div class="time-wheel__col time-wheel__col--period" data-wheel="period"></div>
+            <button type="button" class="time-wheel__done" data-time-done>Listo</button>
+          </div>
+          <input type="time" class="time-field__native" data-time-native aria-label="Horario">
+          <input type="hidden" id="eventTime" name="eventTime">
         </div>
-        <input type="hidden" id="eventTime" name="eventTime">
       </div>
 
       <div class="form-row form-row--split" id="horarioDualRow" hidden>
         <div>
           <label>Horario Iglesia</label>
-          <div class="time-picker" data-time-picker>
-            <div class="time-picker__track" data-time-picker-track></div>
+          <div class="time-field" data-time-field>
+            <button type="button" class="time-field__trigger" data-time-trigger>
+              <i class="fa-solid fa-clock"></i>
+              <span data-time-label>Seleccioná un horario</span>
+            </button>
+            <div class="time-wheel" data-time-popover hidden>
+              <div class="time-wheel__highlight" aria-hidden="true"></div>
+              <div class="time-wheel__col" data-wheel="hour"></div>
+              <span class="time-wheel__sep">:</span>
+              <div class="time-wheel__col" data-wheel="minute"></div>
+              <div class="time-wheel__col time-wheel__col--period" data-wheel="period"></div>
+              <button type="button" class="time-wheel__done" data-time-done>Listo</button>
+            </div>
+            <input type="time" class="time-field__native" data-time-native aria-label="Horario Iglesia">
+            <input type="hidden" id="eventTimeChurch" name="eventTimeChurch">
           </div>
-          <input type="hidden" id="eventTimeChurch" name="eventTimeChurch">
         </div>
         <div>
           <label>Horario Salón</label>
-          <div class="time-picker" data-time-picker>
-            <div class="time-picker__track" data-time-picker-track></div>
+          <div class="time-field" data-time-field>
+            <button type="button" class="time-field__trigger" data-time-trigger>
+              <i class="fa-solid fa-clock"></i>
+              <span data-time-label>Seleccioná un horario</span>
+            </button>
+            <div class="time-wheel" data-time-popover hidden>
+              <div class="time-wheel__highlight" aria-hidden="true"></div>
+              <div class="time-wheel__col" data-wheel="hour"></div>
+              <span class="time-wheel__sep">:</span>
+              <div class="time-wheel__col" data-wheel="minute"></div>
+              <div class="time-wheel__col time-wheel__col--period" data-wheel="period"></div>
+              <button type="button" class="time-wheel__done" data-time-done>Listo</button>
+            </div>
+            <input type="time" class="time-field__native" data-time-native aria-label="Horario Salón">
+            <input type="hidden" id="eventTimeVenue" name="eventTimeVenue">
           </div>
-          <input type="hidden" id="eventTimeVenue" name="eventTimeVenue">
         </div>
       </div>
 

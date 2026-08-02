@@ -444,7 +444,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const locationSingleRow = document.getElementById('locationSingleRow');
   const locationDualRow = document.getElementById('locationDualRow');
-  document.querySelectorAll('[data-loc-field]').forEach(createLocationField);
+  const locationFields = Array.from(document.querySelectorAll('[data-loc-field]')).map((root) => ({
+    root,
+    field: createLocationField(root),
+  }));
 
   function updateLocationRows() {
     const hasLocation = Boolean(eventLocationSelect.value);
@@ -456,6 +459,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // El "piano en recepcion" solo aplica cuando hay salon Y iglesia
     pianoRecepcionRow.hidden = !isBoth;
     if (!isBoth) pianoRecepcionInput.checked = false;
+
+    // Al elegir "Salon e Iglesia" aparecen los DOS mapas juntos (no uno a la vez).
+    // Para una unica ubicacion, tambien se muestra su mapa de una.
+    locationFields.forEach(({ root, field }) => {
+      const isRelevant = isBoth ? locationDualRow.contains(root) : root === locationSingleRow;
+      if (isRelevant && hasLocation) field.reveal();
+    });
   }
 
   eventLocationSelect.addEventListener('change', () => {
@@ -465,37 +475,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
   eventTypeSelect.addEventListener('change', updateLocationOptions);
 
-  // Selector de horario tipo chips (reemplaza el <input type="time"> nativo)
-  function buildTimePicker(pickerEl) {
-    const track = pickerEl.querySelector('[data-time-picker-track]');
-    const hiddenInput = pickerEl.nextElementSibling;
-    if (!track || !hiddenInput) return;
+  // Selector de horario tipo "rueda" (drum picker). Desktop: popover con 3 columnas
+  // Hora/Minuto/AM-PM que se manejan con click o scroll. Mobile: input nativo del sistema.
+  const WHEEL_ITEM_HEIGHT = 36;
 
-    const START_MIN = 9 * 60; // 09:00
-    const END_MIN = 23 * 60 + 30; // 23:30
-    const STEP = 30;
+  function initTimeField(root) {
+    const trigger = root.querySelector('[data-time-trigger]');
+    const label = root.querySelector('[data-time-label]');
+    const popover = root.querySelector('[data-time-popover]');
+    const doneBtn = root.querySelector('[data-time-done]');
+    const hourCol = root.querySelector('[data-wheel="hour"]');
+    const minuteCol = root.querySelector('[data-wheel="minute"]');
+    const periodCol = root.querySelector('[data-wheel="period"]');
+    const nativeInput = root.querySelector('[data-time-native]');
+    const hiddenInput = root.querySelector('input[type="hidden"]');
 
-    for (let mins = START_MIN; mins <= END_MIN; mins += STEP) {
-      const h = String(Math.floor(mins / 60)).padStart(2, '0');
-      const m = String(mins % 60).padStart(2, '0');
-      const label = `${h}:${m}`;
+    let currentHour = 12;
+    let currentMinute = 0;
+    let currentPeriod = 'PM';
 
-      const chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'time-chip';
-      chip.textContent = label;
+    function commit() {
+      const display = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')} ${currentPeriod}`;
+      hiddenInput.value = display;
+      label.textContent = display;
+      trigger.classList.add('has-value');
+    }
 
-      chip.addEventListener('click', () => {
-        track.querySelectorAll('.time-chip').forEach((c) => c.classList.remove('is-active'));
-        chip.classList.add('is-active');
-        hiddenInput.value = label;
+    function buildWheel(container, values, initialIndex, onSelect) {
+      values.forEach((val) => {
+        const item = document.createElement('div');
+        item.className = 'wheel-item';
+        item.textContent = val;
+        container.appendChild(item);
       });
 
-      track.appendChild(chip);
+      const items = Array.from(container.children);
+
+      function refreshStyles() {
+        const centerIndex = Math.max(0, Math.min(items.length - 1, Math.round(container.scrollTop / WHEEL_ITEM_HEIGHT)));
+        items.forEach((item, i) => {
+          const distance = Math.abs(i - centerIndex);
+          item.classList.toggle('is-center', distance === 0);
+          item.style.opacity = String(Math.max(1 - distance * 0.35, 0.18));
+          item.style.transform = `scale(${distance === 0 ? 1 : Math.max(1 - distance * 0.18, 0.72)})`;
+        });
+        return centerIndex;
+      }
+
+      let settleTimer;
+      container.addEventListener('scroll', () => {
+        const centerIndex = refreshStyles();
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(() => {
+          container.scrollTo({ top: centerIndex * WHEEL_ITEM_HEIGHT, behavior: 'smooth' });
+          onSelect(values[centerIndex]);
+          commit();
+        }, 130);
+      });
+
+      items.forEach((item, i) => {
+        item.addEventListener('click', () => {
+          container.scrollTo({ top: i * WHEEL_ITEM_HEIGHT, behavior: 'smooth' });
+        });
+      });
+
+      container.scrollTop = initialIndex * WHEEL_ITEM_HEIGHT;
+      refreshStyles();
     }
+
+    const hours = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+    const minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
+    const periods = ['AM', 'PM'];
+
+    buildWheel(hourCol, hours, currentHour - 1, (val) => { currentHour = parseInt(val, 10); });
+    buildWheel(minuteCol, minutes, currentMinute, (val) => { currentMinute = parseInt(val, 10); });
+    buildWheel(periodCol, periods, 1, (val) => { currentPeriod = val; });
+
+    function onOutsideClick(e) {
+      if (!root.contains(e.target)) closePopover();
+    }
+
+    function openPopover() {
+      popover.hidden = false;
+      document.addEventListener('click', onOutsideClick);
+    }
+
+    function closePopover() {
+      popover.hidden = true;
+      document.removeEventListener('click', onOutsideClick);
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (popover.hidden) openPopover();
+      else closePopover();
+    });
+
+    doneBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closePopover();
+    });
+
+    // Mobile: el selector nativo del dispositivo maneja la seleccion
+    nativeInput.addEventListener('change', () => {
+      if (!nativeInput.value) return;
+      const [h, m] = nativeInput.value.split(':').map(Number);
+      currentPeriod = h >= 12 ? 'PM' : 'AM';
+      currentHour = h % 12 === 0 ? 12 : h % 12;
+      currentMinute = m;
+      commit();
+    });
   }
 
-  document.querySelectorAll('[data-time-picker]').forEach(buildTimePicker);
+  document.querySelectorAll('[data-time-field]').forEach(initTimeField);
 
   budgetForm.addEventListener('submit', (e) => {
     e.preventDefault();

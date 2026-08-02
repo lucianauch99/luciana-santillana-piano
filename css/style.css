@@ -1035,57 +1035,158 @@ section {
   .form-row--split { grid-template-columns: 1fr; }
 }
 
-/* Selector de horario tipo chips (reemplaza el <input type="time"> nativo) */
-.time-picker {
+/* Selector de horario tipo "rueda" (drum picker, como el reloj nativo de iOS/Android) */
+.time-field {
   position: relative;
 }
 
-.time-picker__track {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding: 4px 2px 8px;
-  scrollbar-width: thin;
-}
-
-.time-picker__track::-webkit-scrollbar {
-  height: 5px;
-}
-
-.time-picker__track::-webkit-scrollbar-thumb {
-  background: var(--color-cream-dark);
-  border-radius: 10px;
-}
-
-.time-chip {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  min-height: 44px;
-  padding: 9px 16px;
-  border-radius: 100px;
+.time-field__trigger {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 16px;
   border: 1.5px solid var(--color-cream-dark);
+  border-radius: 10px;
   background: var(--color-cream);
   color: var(--color-dark-gray);
-  font-size: 0.88rem;
-  font-weight: 500;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  text-align: left;
   transition: var(--transition);
 }
 
-.time-chip:hover,
-.time-chip:focus-visible {
-  transform: translateY(-3px);
-  border-color: var(--color-gold);
+.time-field__trigger i {
   color: var(--color-gold-dark);
-  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.2);
 }
 
-.time-chip.is-active {
+.time-field__trigger:hover,
+.time-field__trigger:focus-visible {
+  border-color: var(--color-gold);
+  background: var(--color-white);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.14);
+}
+
+/* Input nativo: solo se usa en mobile (ver media query mas abajo) */
+.time-field__native {
+  display: none;
+}
+
+.time-wheel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
+  width: 220px;
+  background: var(--color-white);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  padding: 14px 16px 16px;
+  animation: heroFadeUp 0.25s ease both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.time-wheel__highlight {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  right: 14px;
+  height: 36px;
+  transform: translateY(-50%);
+  border-top: 1.5px solid var(--color-gold);
+  border-bottom: 1.5px solid var(--color-gold);
+  background: rgba(212, 175, 55, 0.06);
+  pointer-events: none;
+}
+
+.time-wheel__col {
+  position: relative;
+  width: 52px;
+  height: 180px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  padding: 72px 0;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%);
+}
+
+.time-wheel__col--period {
+  width: 44px;
+}
+
+.time-wheel__col::-webkit-scrollbar {
+  display: none;
+}
+
+.wheel-item {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-dark-gray);
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.wheel-item.is-center {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gold-dark);
+}
+
+.time-wheel__sep {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  padding-bottom: 2px;
+}
+
+.time-wheel__done {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-height: 32px;
+  padding: 6px 20px;
+  border-radius: 100px;
   background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
-  border-color: var(--color-gold-dark);
   color: var(--color-white);
+  font-size: 0.8rem;
+  font-weight: 500;
   box-shadow: var(--shadow-gold);
+  transition: var(--transition);
+}
+
+.time-wheel__done:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .time-field__trigger,
+  .time-wheel {
+    display: none !important;
+  }
+
+  .time-field__native {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 16px;
+    border: 1.5px solid var(--color-cream-dark);
+    border-radius: 10px;
+    background: var(--color-cream);
+    color: var(--color-dark-gray);
+    font-size: 1rem;
+  }
 }
 
 /* Selector de fecha propio (calendario desplegable, mas fluido que el input nativo) */
