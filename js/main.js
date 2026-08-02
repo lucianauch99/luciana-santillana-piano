@@ -185,7 +185,109 @@ document.addEventListener('DOMContentLoaded', () => {
   // En "Fiesta de 15 años" no aplican las ubicaciones con iglesia
   const eventTypeSelect = document.getElementById('eventType');
   const eventLocationSelect = document.getElementById('eventLocation');
-  const CHURCH_LOCATIONS = ['Salón e Iglesia', 'Solo Iglesia'];
+  const CHURCH_LOCATIONS = ['Salón e Iglesia', 'Iglesia'];
+
+  // Horarios: uno solo, o dos (iglesia + salon) segun la ubicacion elegida
+  const horarioSingleRow = document.getElementById('horarioSingleRow');
+  const horarioDualRow = document.getElementById('horarioDualRow');
+
+  function updateHorarioRows() {
+    const hasLocation = Boolean(eventLocationSelect.value);
+    const isBoth = eventLocationSelect.value === 'Salón e Iglesia';
+
+    horarioDualRow.hidden = !isBoth;
+    horarioSingleRow.hidden = !(hasLocation && !isBoth);
+  }
+
+  // Mapa interactivo para marcar el lugar del evento (Leaflet + OpenStreetMap, sin API key)
+  const mapRow = document.getElementById('mapRow');
+  const mapContainer = document.getElementById('eventMap');
+  const latInput = document.getElementById('eventLat');
+  const lngInput = document.getElementById('eventLng');
+  const mapSearchBtn = document.getElementById('mapSearchBtn');
+  const locationDetailInput = document.getElementById('locationDetail');
+  const MENDOZA_CENTER = [-32.8908, -68.8272];
+  let leafletMap = null;
+  let mapMarker = null;
+
+  function ensureMap() {
+    if (leafletMap || typeof L === 'undefined') return;
+
+    leafletMap = L.map(mapContainer).setView(MENDOZA_CENTER, 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(leafletMap);
+
+    leafletMap.on('click', (e) => placeMarker(e.latlng.lat, e.latlng.lng, true));
+  }
+
+  function placeMarker(lat, lng, recenter) {
+    latInput.value = lat.toFixed(6);
+    lngInput.value = lng.toFixed(6);
+
+    if (mapMarker) {
+      mapMarker.setLatLng([lat, lng]);
+    } else {
+      mapMarker = L.marker([lat, lng], { draggable: true }).addTo(leafletMap);
+      mapMarker.on('dragend', () => {
+        const pos = mapMarker.getLatLng();
+        latInput.value = pos.lat.toFixed(6);
+        lngInput.value = pos.lng.toFixed(6);
+      });
+    }
+
+    if (recenter) leafletMap.setView([lat, lng], 15);
+  }
+
+  function updateMapVisibility() {
+    const hasLocation = Boolean(eventLocationSelect.value);
+    mapRow.hidden = !hasLocation;
+
+    if (hasLocation) {
+      requestAnimationFrame(() => {
+        ensureMap();
+        if (leafletMap) leafletMap.invalidateSize();
+      });
+    }
+  }
+
+  eventLocationSelect.addEventListener('change', () => {
+    updateHorarioRows();
+    updateMapVisibility();
+  });
+
+  mapSearchBtn.addEventListener('click', async () => {
+    const query = locationDetailInput.value.trim();
+
+    if (!eventLocationSelect.value) {
+      showToast('Elegí primero la ubicación del evento');
+      return;
+    }
+
+    if (!query) {
+      showToast('Escribí una dirección para buscarla en el mapa');
+      return;
+    }
+
+    ensureMap();
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query + ', Mendoza, Argentina')}`
+      );
+      const results = await response.json();
+
+      if (!results.length) {
+        showToast('No se encontró esa dirección, marcala manualmente en el mapa');
+        return;
+      }
+
+      placeMarker(parseFloat(results[0].lat), parseFloat(results[0].lon), true);
+    } catch (err) {
+      showToast('No se pudo buscar la dirección, marcala manualmente en el mapa');
+    }
+  });
 
   eventTypeSelect.addEventListener('change', () => {
     const isXV = eventTypeSelect.value === 'Fiesta de 15 años';
@@ -199,6 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isXV && CHURCH_LOCATIONS.includes(eventLocationSelect.value)) {
       eventLocationSelect.value = '';
+      updateHorarioRows();
+      updateMapVisibility();
     }
   });
 
@@ -209,6 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventType = budgetForm.eventType.value;
     const eventLocation = budgetForm.eventLocation.value;
     const locationDetail = budgetForm.locationDetail.value.trim();
+    const lat = budgetForm.eventLat.value;
+    const lng = budgetForm.eventLng.value;
+    const isBothLocations = eventLocation === 'Salón e Iglesia';
+    const eventTime = budgetForm.eventTime.value;
+    const eventTimeChurch = budgetForm.eventTimeChurch.value;
+    const eventTimeVenue = budgetForm.eventTimeVenue.value;
+    const pianoRecepcion = budgetForm.pianoRecepcion.checked;
     const eventDate = budgetForm.eventDate.value;
     const message = budgetForm.message.value.trim();
 
@@ -217,12 +328,19 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const mapsLink = (lat && lng) ? `https://www.google.com/maps?q=${lat},${lng}` : null;
+
     const lines = [
       `¡Hola Luciana! Quisiera solicitar un presupuesto.`,
       `Nombre: ${name}`,
       `Tipo de evento: ${eventType}`,
       eventLocation ? `Ubicación del evento: ${eventLocation}` : null,
       locationDetail ? `Dirección / detalle: ${locationDetail}` : null,
+      mapsLink ? `Ubicación en el mapa: ${mapsLink}` : null,
+      isBothLocations && eventTimeChurch ? `Horario Iglesia: ${eventTimeChurch}` : null,
+      isBothLocations && eventTimeVenue ? `Horario Salón: ${eventTimeVenue}` : null,
+      !isBothLocations && eventTime ? `Horario: ${eventTime}` : null,
+      pianoRecepcion ? `Piano en recepción: Sí` : null,
       eventDate ? `Fecha tentativa: ${eventDate}` : null,
       message ? `Mensaje: ${message}` : null,
     ].filter(Boolean);

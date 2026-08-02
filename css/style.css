@@ -944,6 +944,157 @@ section {
   box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.14);
 }
 
+/* Input de dirección + boton de buscar en el mapa */
+.input-with-btn {
+  display: flex;
+  gap: 8px;
+}
+
+.input-with-btn input {
+  flex: 1;
+}
+
+.input-with-btn__action {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 10px;
+  background: var(--color-cream);
+  border: 1.5px solid var(--color-cream-dark);
+  color: var(--color-gold-dark);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.input-with-btn__action:hover,
+.input-with-btn__action:focus-visible {
+  background: var(--color-gold);
+  color: var(--color-white);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-gold);
+}
+
+/* Mapa del evento */
+.form-row--map {
+  animation: heroFadeUp 0.5s ease both;
+}
+
+.event-map {
+  width: 100%;
+  height: 260px;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-cream-dark);
+  overflow: hidden;
+}
+
+/* Horarios en dos columnas (iglesia + salon) */
+.form-row--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-row--split > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row--split label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-dark-gray);
+}
+
+.form-row--split input {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--color-cream-dark);
+  border-radius: 10px;
+  background: var(--color-cream);
+  color: var(--color-dark-gray);
+  transition: var(--transition);
+}
+
+.form-row--split input:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  background: var(--color-white);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.14);
+}
+
+@media (max-width: 400px) {
+  .form-row--split { grid-template-columns: 1fr; }
+}
+
+/* Checkbox "Piano en recepcion" */
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--color-dark-gray);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.checkbox__box {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-cream-dark);
+  background: var(--color-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  position: relative;
+}
+
+.checkbox__box::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  border: solid var(--color-white);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: var(--transition);
+  margin-top: -2px;
+}
+
+.checkbox input:checked ~ .checkbox__box {
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
+  border-color: var(--color-gold-dark);
+}
+
+.checkbox input:checked ~ .checkbox__box::after {
+  transform: rotate(45deg) scale(1);
+}
+
+.checkbox input:focus-visible ~ .checkbox__box {
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.25);
+}
+
+.checkbox:hover .checkbox__box {
+  transform: translateY(-2px);
+}
+
 /* =========================================================
    FOOTER
    ========================================================= */

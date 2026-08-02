@@ -14,6 +14,9 @@
 <!-- Iconos (Font Awesome vía CDN) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<!-- Leaflet (mapa interactivo con OpenStreetMap, gratuito y sin API key) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -69,7 +72,7 @@
       este momento para siempre.
     </p>
     <div class="hero__actions hero__enter hero__enter--delay">
-      <a href="#contacto" class="btn btn--gold">Pedir Presupuesto</a>
+      <a href="#contacto" class="btn btn--gold">Cotizar Evento</a>
       <a href="#demos" class="btn btn--outline">
         <i class="fa-solid fa-play"></i> Escuchar Demos
       </a>
@@ -331,16 +334,50 @@
         <select id="eventLocation" name="eventLocation">
           <option value="" disabled selected>Seleccioná una opción</option>
           <option value="Salón e Iglesia">Salón e Iglesia</option>
-          <option value="Solo Salón">Solo Salón</option>
-          <option value="Solo Iglesia">Solo Iglesia</option>
+          <option value="Salón">Salón</option>
+          <option value="Iglesia">Iglesia</option>
           <option value="Otra ubicación">Otra ubicación</option>
         </select>
       </div>
 
       <div class="form-row">
         <label for="locationDetail">Dirección o detalle del lugar</label>
-        <input type="text" id="locationDetail" name="locationDetail" placeholder="Ej: Salón Los Aromos, Luján de Cuyo">
+        <div class="input-with-btn">
+          <input type="text" id="locationDetail" name="locationDetail" placeholder="Ej: Salón Los Aromos, Luján de Cuyo">
+          <button type="button" class="input-with-btn__action" id="mapSearchBtn" aria-label="Buscar dirección en el mapa">
+            <i class="fa-solid fa-magnifying-glass-location"></i>
+          </button>
+        </div>
       </div>
+
+      <div class="form-row form-row--map" id="mapRow" hidden>
+        <label>Marcá el lugar exacto en el mapa (opcional)</label>
+        <div id="eventMap" class="event-map"></div>
+        <input type="hidden" id="eventLat" name="eventLat">
+        <input type="hidden" id="eventLng" name="eventLng">
+      </div>
+
+      <div class="form-row" id="horarioSingleRow" hidden>
+        <label for="eventTime">Horario</label>
+        <input type="time" id="eventTime" name="eventTime">
+      </div>
+
+      <div class="form-row form-row--split" id="horarioDualRow" hidden>
+        <div>
+          <label for="eventTimeChurch">Horario Iglesia</label>
+          <input type="time" id="eventTimeChurch" name="eventTimeChurch">
+        </div>
+        <div>
+          <label for="eventTimeVenue">Horario Salón</label>
+          <input type="time" id="eventTimeVenue" name="eventTimeVenue">
+        </div>
+      </div>
+
+      <label class="checkbox">
+        <input type="checkbox" id="pianoRecepcion" name="pianoRecepcion">
+        <span class="checkbox__box" aria-hidden="true"></span>
+        Piano en recepción
+      </label>
 
       <div class="form-row">
         <label for="eventDate">Fecha tentativa</label>
@@ -398,6 +435,7 @@
 <!-- ================= TOAST ================= -->
 <div class="toast" id="toast"></div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
