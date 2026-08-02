@@ -405,15 +405,36 @@
         </div>
       </div>
 
-      <label class="checkbox">
+      <label class="checkbox" id="pianoRecepcionRow" hidden>
         <input type="checkbox" id="pianoRecepcion" name="pianoRecepcion">
         <span class="checkbox__box" aria-hidden="true"></span>
         Agregar piano en recepción
       </label>
 
       <div class="form-row">
-        <label for="eventDate">Fecha tentativa</label>
-        <input type="date" id="eventDate" name="eventDate">
+        <label>Fecha tentativa</label>
+        <div class="date-picker" data-date-picker>
+          <button type="button" class="date-picker__trigger" data-date-trigger>
+            <i class="fa-solid fa-calendar-days"></i>
+            <span data-date-label>Seleccioná una fecha</span>
+          </button>
+          <div class="date-picker__panel" data-date-panel hidden>
+            <div class="date-picker__header">
+              <button type="button" class="date-picker__nav" data-date-prev aria-label="Mes anterior">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <span class="date-picker__month" data-date-month></span>
+              <button type="button" class="date-picker__nav" data-date-next aria-label="Mes siguiente">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+            <div class="date-picker__weekdays">
+              <span>D</span><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span>
+            </div>
+            <div class="date-picker__days" data-date-days></div>
+          </div>
+          <input type="hidden" id="eventDate" name="eventDate">
+        </div>
       </div>
 
       <div class="form-row">

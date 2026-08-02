@@ -172,20 +172,140 @@ document.addEventListener('DOMContentLoaded', () => {
   const WHATSAPP_NUMBER = '5492612055204';
   const budgetForm = document.getElementById('budgetForm');
 
-  // No permitir seleccionar fechas pasadas en "Fecha tentativa"
-  const eventDateInput = document.getElementById('eventDate');
-  if (eventDateInput) {
+  // Calendario propio para "Fecha tentativa" (mas fluido que el <input type="date"> nativo)
+  function initDatePicker(root) {
+    const trigger = root.querySelector('[data-date-trigger]');
+    const label = root.querySelector('[data-date-label]');
+    const panel = root.querySelector('[data-date-panel]');
+    const monthLabel = root.querySelector('[data-date-month]');
+    const daysContainer = root.querySelector('[data-date-days]');
+    const prevBtn = root.querySelector('[data-date-prev]');
+    const nextBtn = root.querySelector('[data-date-next]');
+    const hiddenInput = root.querySelector('input[type="hidden"]');
+
+    const MONTH_NAMES = [
+      'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+      'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+    ];
+
     const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    eventDateInput.min = `${yyyy}-${mm}-${dd}`;
+    today.setHours(0, 0, 0, 0);
+
+    let viewYear = today.getFullYear();
+    let viewMonth = today.getMonth();
+    let selectedDate = null;
+
+    function formatISO(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatDisplay(date) {
+      return `${date.getDate()} de ${MONTH_NAMES[date.getMonth()]} de ${date.getFullYear()}`;
+    }
+
+    function render() {
+      monthLabel.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
+      daysContainer.innerHTML = '';
+
+      const startOffset = new Date(viewYear, viewMonth, 1).getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < startOffset; i++) {
+        const empty = document.createElement('span');
+        empty.className = 'date-picker__day is-empty';
+        daysContainer.appendChild(empty);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(viewYear, viewMonth, day);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'date-picker__day';
+        btn.textContent = String(day);
+
+        if (date < today) btn.disabled = true;
+        if (date.getTime() === today.getTime()) btn.classList.add('is-today');
+        if (selectedDate && date.getTime() === selectedDate.getTime()) btn.classList.add('is-selected');
+
+        btn.addEventListener('click', () => {
+          selectedDate = date;
+          hiddenInput.value = formatISO(date);
+          label.textContent = formatDisplay(date);
+          trigger.classList.add('has-value');
+          closePanel();
+          render();
+        });
+
+        daysContainer.appendChild(btn);
+      }
+    }
+
+    function onOutsideClick(e) {
+      if (!root.contains(e.target)) closePanel();
+    }
+
+    function openPanel() {
+      panel.hidden = false;
+      render();
+      document.addEventListener('click', onOutsideClick);
+    }
+
+    function closePanel() {
+      panel.hidden = true;
+      document.removeEventListener('click', onOutsideClick);
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (panel.hidden) openPanel();
+      else closePanel();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      viewMonth -= 1;
+      if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+      render();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      viewMonth += 1;
+      if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+      render();
+    });
   }
 
-  // En "Fiesta de 15 años" no aplican las ubicaciones con iglesia
+  document.querySelectorAll('[data-date-picker]').forEach(initDatePicker);
+
   const eventTypeSelect = document.getElementById('eventType');
   const eventLocationSelect = document.getElementById('eventLocation');
-  const CHURCH_LOCATIONS = ['Salón e Iglesia', 'Iglesia'];
+  const pianoRecepcionRow = document.getElementById('pianoRecepcionRow');
+  const pianoRecepcionInput = document.getElementById('pianoRecepcion');
+
+  // Segun el tipo de evento, algunas ubicaciones no tienen sentido y se ocultan del select
+  const LOCATION_RESTRICTIONS = {
+    'Fiesta de 15 años': ['Salón', 'Otra ubicación'],
+    'Recepción Privada': ['Otra ubicación'],
+  };
+
+  function updateLocationOptions() {
+    const allowed = LOCATION_RESTRICTIONS[eventTypeSelect.value] || null;
+
+    Array.from(eventLocationSelect.options).forEach((option) => {
+      if (!option.value) return;
+      const isAllowed = !allowed || allowed.includes(option.value);
+      option.hidden = !isAllowed;
+      option.disabled = !isAllowed;
+    });
+
+    if (allowed && eventLocationSelect.value && !allowed.includes(eventLocationSelect.value)) {
+      eventLocationSelect.value = '';
+      updateHorarioRows();
+      updateLocationRows();
+    }
+  }
 
   // Horarios: uno solo, o dos (iglesia + salon) segun la ubicacion elegida
   const horarioSingleRow = document.getElementById('horarioSingleRow');
@@ -293,31 +413,38 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    searchBtn.addEventListener('click', search);
+    // El mapa aparece recien cuando la persona interactua con ESE campo de direccion puntual
+    function reveal() {
+      if (!mapEl.hidden) return;
+      mapEl.hidden = false;
+      requestAnimationFrame(() => {
+        ensureMap();
+        if (map) map.invalidateSize();
+      });
+    }
+
+    input.addEventListener('focus', reveal);
+    input.addEventListener('click', reveal);
+
+    searchBtn.addEventListener('click', () => {
+      reveal();
+      search();
+    });
+
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
+        reveal();
         search();
       }
     });
 
-    return {
-      show() {
-        mapEl.hidden = false;
-        requestAnimationFrame(() => {
-          ensureMap();
-          if (map) map.invalidateSize();
-        });
-      },
-    };
+    return { reveal };
   }
 
   const locationSingleRow = document.getElementById('locationSingleRow');
   const locationDualRow = document.getElementById('locationDualRow');
-  const locationFields = Array.from(document.querySelectorAll('[data-loc-field]')).map((root) => ({
-    root,
-    field: createLocationField(root),
-  }));
+  document.querySelectorAll('[data-loc-field]').forEach(createLocationField);
 
   function updateLocationRows() {
     const hasLocation = Boolean(eventLocationSelect.value);
@@ -326,12 +453,9 @@ document.addEventListener('DOMContentLoaded', () => {
     locationSingleRow.hidden = !(hasLocation && !isBoth);
     locationDualRow.hidden = !isBoth;
 
-    locationFields.forEach(({ root, field }) => {
-      const visible = isBoth
-        ? locationDualRow.contains(root)
-        : root === locationSingleRow;
-      if (visible && hasLocation) field.show();
-    });
+    // El "piano en recepcion" solo aplica cuando hay salon Y iglesia
+    pianoRecepcionRow.hidden = !isBoth;
+    if (!isBoth) pianoRecepcionInput.checked = false;
   }
 
   eventLocationSelect.addEventListener('change', () => {
@@ -339,22 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLocationRows();
   });
 
-  eventTypeSelect.addEventListener('change', () => {
-    const isXV = eventTypeSelect.value === 'Fiesta de 15 años';
-
-    Array.from(eventLocationSelect.options).forEach((option) => {
-      if (CHURCH_LOCATIONS.includes(option.value)) {
-        option.hidden = isXV;
-        option.disabled = isXV;
-      }
-    });
-
-    if (isXV && CHURCH_LOCATIONS.includes(eventLocationSelect.value)) {
-      eventLocationSelect.value = '';
-      updateHorarioRows();
-      updateLocationRows();
-    }
-  });
+  eventTypeSelect.addEventListener('change', updateLocationOptions);
 
   // Selector de horario tipo chips (reemplaza el <input type="time"> nativo)
   function buildTimePicker(pickerEl) {
