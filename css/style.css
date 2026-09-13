@@ -4,6 +4,10 @@
 
 /* ---------- Variables ---------- */
 :root {
+  /* Evita que el navegador oscurezca colores/controles automaticamente
+     cuando el celular esta en modo oscuro (Android "Force Dark", etc.) */
+  color-scheme: light only;
+
   --color-cream: #FAF8F5;
   --color-cream-dark: #F0EAE0;
   --color-gold: #D4AF37;
