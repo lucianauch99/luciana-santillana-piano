@@ -313,12 +313,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const horarioSingleRow = document.getElementById('horarioSingleRow');
   const horarioDualRow = document.getElementById('horarioDualRow');
 
+  // iOS Safari: un <input> nativo que recien deja de estar en display:none a
+  // veces no responde al primer toque. Forzar un reflow lo desbloquea.
+  function forceNativeInputReflow(row) {
+    row.querySelectorAll('.time-field__native').forEach((el) => {
+      el.style.display = 'none';
+      void el.offsetHeight;
+      el.style.display = '';
+    });
+  }
+
   function updateHorarioRows() {
     const hasLocation = Boolean(eventLocationSelect.value);
     const isBoth = eventLocationSelect.value === 'Salón e Iglesia';
 
     horarioDualRow.hidden = !isBoth;
     horarioSingleRow.hidden = !(hasLocation && !isBoth);
+
+    if (isBoth) forceNativeInputReflow(horarioDualRow);
+    if (hasLocation && !isBoth) forceNativeInputReflow(horarioSingleRow);
   }
 
   // Direccion + mapa interactivo para marcar el lugar (Leaflet + OpenStreetMap, sin API key).
