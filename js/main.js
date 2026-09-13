@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   navToggle.addEventListener('click', () => {
     const isOpen = navMenu.classList.toggle('is-open');
     navToggle.classList.toggle('is-active', isOpen);
+    navbar.classList.toggle('menu-open', isOpen);
     navToggle.setAttribute('aria-expanded', String(isOpen));
   });
 
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', () => {
       navMenu.classList.remove('is-open');
       navToggle.classList.remove('is-active');
+      navbar.classList.remove('menu-open');
       navToggle.setAttribute('aria-expanded', 'false');
     });
   });

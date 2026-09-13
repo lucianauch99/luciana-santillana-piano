@@ -352,6 +352,11 @@ section {
   background: var(--color-black);
 }
 
+/* El panel mobile es color crema: la X tiene que ser oscura aunque no se haya scrolleado */
+.navbar.menu-open .navbar__toggle span {
+  background: var(--color-black);
+}
+
 .navbar__toggle.is-active span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
 }
